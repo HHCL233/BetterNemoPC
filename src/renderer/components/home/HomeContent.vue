@@ -15,12 +15,15 @@
             <mdui-card clickable variant="filled" class="home-work-card"
                 @click="contentStore.switchContentData('work', item['id'])"
                 v-for="(item, index) in homeStore.homeData?.homeBestWorkList" :key="index">
-                <div src="" class="home-work-card-cover" :style="'background-image: url(' + item['preview'] + ');'">
-                </div>
-                <h4 class="home-work-card-title">{{ item['name'] ?? 'Oldsquaw-BetterNemo' }}</h4>
-                <div class="home-work-card-user">
-                    <mdui-avatar class="home-work-card-user-avatar" :src="item['user']['avatar_url']"></mdui-avatar>
-                    <p class="home-work-card-user-name">{{ item['user']['nickname'] ?? 'Inventocode' }}</p>
+                <mdui-card src="" class="home-work-card-cover" variant="filled"
+                    :style="'background-image: url(' + item['preview'] + ');'">
+                </mdui-card>
+                <div class="home-work-card-info">
+                    <h4 class="home-work-card-title">{{ item['name'] ?? 'Oldsquaw-BetterNemo' }}</h4>
+                    <div class="home-work-card-user">
+                        <mdui-avatar class="home-work-card-user-avatar" :src="item['user']['avatar_url']"></mdui-avatar>
+                        <p class="home-work-card-user-name">{{ item['user']['nickname'] ?? 'Inventocode' }}</p>
+                    </div>
                 </div>
             </mdui-card>
         </div>
@@ -29,12 +32,15 @@
             <mdui-card clickable variant="filled" class="home-work-card"
                 @click="contentStore.switchContentData('work', item['id'])"
                 v-for="(item, index) in homeStore.homeData?.homeGoodWorkList" :key="index">
-                <div src="" class="home-work-card-cover" :style="'background-image: url(' + item['preview'] + ');'">
-                </div>
-                <h4 class="home-work-card-title">{{ item['name'] ?? 'Oldsquaw-BetterNemo' }}</h4>
-                <div class="home-work-card-user">
-                    <mdui-avatar class="home-work-card-user-avatar" :src="item['user']['avatar_url']"></mdui-avatar>
-                    <p class="home-work-card-user-name">{{ item['user']['nickname'] ?? 'Inventocode' }}</p>
+                <mdui-card src="" class="home-work-card-cover" variant="filled"
+                    :style="'background-image: url(' + item['preview'] + ');'">
+                </mdui-card>
+                <div class="home-work-card-info">
+                    <h4 class="home-work-card-title">{{ item['name'] ?? 'Oldsquaw-BetterNemo' }}</h4>
+                    <div class="home-work-card-user">
+                        <mdui-avatar class="home-work-card-user-avatar" :src="item['user']['avatar_url']"></mdui-avatar>
+                        <p class="home-work-card-user-name">{{ item['user']['nickname'] ?? 'Inventocode' }}</p>
+                    </div>
                 </div>
             </mdui-card>
         </div>
@@ -93,11 +99,14 @@ onMounted(async () => {
 
 .home-work-card {
     width: auto;
-    height: 260px;
+    height: 280px;
     margin-right: calc(4% / 3);
     margin-bottom: calc(4% / 3);
     flex: 0 0 24%;
-    padding: 12px;
+}
+
+.home-work-card-info {
+    padding: 6px 12px;
 }
 
 .home-work-card:nth-child(4n) {
@@ -121,7 +130,6 @@ onMounted(async () => {
 .home-work-card-cover {
     width: 100%;
     aspect-ratio: 1 / 1;
-    border-radius: 6px;
     border: 0;
     display: block;
     background-size: 100% 100%;

@@ -26,9 +26,11 @@
             <mdui-card clickable variant="filled" class="me-work-card"
                 @click="contentStore.switchContentData('work', item['id'])"
                 v-for="(item, index) in contentStore.userWork" :key="index">
-                <div src="" class="me-work-card-cover" :style="'background-image: url(' + item['preview'] + ');'">
+                <mdui-card src="" class="me-work-card-cover" :style="'background-image: url(' + item['preview'] + ');'">
+                </mdui-card>
+                <div class="me-work-card-info">
+                    <h4 class="me-work-card-title">{{ item['work_name'] ?? 'Oldsquaw-BetterNemo' }}</h4>
                 </div>
-                <h4 class="me-work-card-title">{{ item['work_name'] ?? 'Oldsquaw-BetterNemo' }}</h4>
             </mdui-card>
         </div>
         <div class="loading" v-if="isLoading"><mdui-circular-progress></mdui-circular-progress></div>
@@ -57,7 +59,7 @@ const fetchData = async () => {
         const newData = (await window.$CodemaoApi.getUserWork(contentStore.userData.user_id, String(page.value * 15))).data
         const newWork = newData.items
         await new Promise(resolve => setTimeout(resolve, 800))
-        if (contentStore.userWork.length >= newData.total) {
+        if ([...contentStore.userWork, ...newWork].length >= newData.total) {
             hasMore.value = false
             isLoading.value = false
         } else {
@@ -176,11 +178,10 @@ onMounted(async () => {
 
 .me-work-card {
     width: auto;
-    height: 260px;
+    height: 280px;
     margin-right: calc(4% / 3);
     margin-bottom: calc(4% / 3);
     flex: 0 0 24%;
-    padding: 12px;
 }
 
 .me-work-card:nth-child(4n) {
@@ -194,10 +195,13 @@ onMounted(async () => {
 .me-work-card-cover {
     width: 100%;
     aspect-ratio: 1 / 1;
-    border-radius: 6px;
     border: 0;
     display: block;
     background-size: 100% 100%;
+}
+
+.me-work-card-info {
+    padding: 6px 12px;
 }
 
 .me-work-card-title {

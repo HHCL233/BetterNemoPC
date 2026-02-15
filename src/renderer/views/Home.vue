@@ -8,7 +8,8 @@
                 @click="contentStore.switchContent('me')">我的</mdui-navigation-rail-item>
             <mdui-navigation-rail-item icon="bug_report--outlined" value="debug"
                 @click="contentStore.switchContent('debug')">调试</mdui-navigation-rail-item>
-            <mdui-button-icon icon="settings" slot="bottom"></mdui-button-icon>
+
+            <mdui-button-icon variant="outlined" icon="settings" slot="bottom" value="settings"></mdui-button-icon>
         </mdui-navigation-rail>
         <div class="right-container">
             <KeepAlive>
