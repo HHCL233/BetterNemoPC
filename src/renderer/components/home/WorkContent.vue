@@ -22,7 +22,7 @@
                             <div style="margin-left: 2.5rem">
                                 <mdui-list-item class="work-description-content">{{ workInfo?.description ??
                                     'BetterNemo我们喜欢你'
-                                    }}</mdui-list-item>
+                                }}</mdui-list-item>
                             </div>
                         </mdui-collapse-item>
                         <mdui-collapse-item>
@@ -30,11 +30,19 @@
                             <div style="margin-left: 2.5rem">
                                 <mdui-list-item class="work-description-content">{{ workInfo?.operation ??
                                     '我们喜欢Inventocode,方圆圆,砂磨'
-                                    }}</mdui-list-item>
+                                }}</mdui-list-item>
                             </div>
                         </mdui-collapse-item>
                     </mdui-collapse>
                 </mdui-list>
+            </mdui-card>
+            <div class="work-control">
+                <mdui-button icon="thumb_up--outlined" class="work-control-button" variant="tonal">点赞</mdui-button>
+                <mdui-button icon="star_border--outlined" class="work-control-button" variant="tonal">收藏</mdui-button>
+                <mdui-button icon="content_copy--outlined" class="work-control-button" variant="tonal">学习</mdui-button>
+            </div>
+            <mdui-card class="work-comment" variant="filled">
+                <p>评论</p>
             </mdui-card>
         </mdui-card>
     </div>
@@ -124,5 +132,21 @@ onMounted(async () => {
 
 .work-description-content {
     overflow-wrap: break-word;
+}
+
+.work-control {
+    display: flex;
+    gap: 8px
+}
+
+.work-control-button {
+    flex: 1;
+}
+
+.work-comment {
+    min-height: 400px;
+    width: 100%;
+    padding: 0 16px;
+    margin-top: 4px;
 }
 </style>
