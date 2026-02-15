@@ -46,7 +46,6 @@ onMounted(() => {
 <style>
 .right-container {
     height: 100vh;
-    overflow: auto;
 }
 
 .content-fade-enter-from {

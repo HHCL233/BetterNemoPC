@@ -1,5 +1,5 @@
 <template>
-    <div class="me-content">
+    <div class="me-content" ref="meContent">
         <mdui-card variant="filled" class="me-info" :style="{
             '--user-cover-url': contentStore.userData?.user_cover
                 ? `url(${contentStore.userData.user_cover})`
@@ -22,16 +22,79 @@
                 </mdui-card>
             </div>
         </mdui-card>
+        <div class="me-work">
+            <mdui-card clickable variant="filled" class="me-work-card"
+                @click="contentStore.switchContentData('work', item['id'])"
+                v-for="(item, index) in contentStore.userWork" :key="index">
+                <div src="" class="me-work-card-cover" :style="'background-image: url(' + item['preview'] + ');'">
+                </div>
+                <h4 class="me-work-card-title">{{ item['work_name'] ?? 'Oldsquaw-BetterNemo' }}</h4>
+            </mdui-card>
+        </div>
+        <div class="loading" v-if="isLoading"><mdui-circular-progress></mdui-circular-progress></div>
+        <div class="no-more" v-if="hasMore === false && contentStore.userWork.length > 0">你来到了宇宙的尽头~</div>
     </div>
 </template>
 
 <script setup>
+import { ref, onMounted } from 'vue'
 import { useContentStore } from '../../../stores/store'
+import { initMeInfo } from '../../../init/meInfoInit'
+import { useInfiniteScroll } from '@vueuse/core'
+
+const meContent = ref(null)
+const isLoading = ref(false)
+const hasMore = ref(true)
+const page = ref(0)
 
 const contentStore = useContentStore()
+
+const fetchData = async () => {
+    if (isLoading.value || !hasMore.value) return
+
+    try {
+        isLoading.value = true
+        const newData = (await window.$CodemaoApi.getUserWork(contentStore.userData.user_id, String(page.value * 15))).data
+        const newWork = newData.items
+        await new Promise(resolve => setTimeout(resolve, 800))
+        if (contentStore.userWork.length >= newData.total) {
+            hasMore.value = false
+            isLoading.value = false
+        } else {
+            console.log(newData)
+            contentStore.userWork = [...contentStore.userWork, ...newWork]
+            page.value++
+        }
+    } catch (error) {
+        console.error('加载失败：', error)
+    } finally {
+        isLoading.value = false
+    }
+}
+
+onMounted(async () => {
+    await initMeInfo()
+
+    useInfiniteScroll(
+        meContent,
+        () => {
+            fetchData()
+        },
+        {
+            distance: 150,
+            disabled: () => isLoading.value || !hasMore.value,
+            immediate: false
+        }
+    )
+})
 </script>
 
 <style>
+.me-content {
+    overflow-y: auto;
+    height: 100vh;
+}
+
 .me-info {
     height: 160px;
     width: 100%;
@@ -43,6 +106,7 @@ const contentStore = useContentStore()
     background-position: center cover;
     background-repeat: no-repeat;
     background-size: cover;
+    margin-bottom: 32px;
 }
 
 .me-avatar {
@@ -98,6 +162,52 @@ const contentStore = useContentStore()
     flex-wrap: wrap;
     justify-content: center;
     padding: 8px 0;
+}
+
+.me-work {
+    margin: auto;
+    min-width: 500px;
+    width: 800px;
+    max-width: 1500px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+}
+
+.me-work-card {
+    width: auto;
+    height: 260px;
+    margin-right: calc(4% / 3);
+    margin-bottom: calc(4% / 3);
+    flex: 0 0 24%;
+    padding: 12px;
+}
+
+.me-work-card:nth-child(4n) {
+    margin-right: 0;
+}
+
+.me-work-card:last-child {
+    margin-right: auto;
+}
+
+.me-work-card-cover {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    border-radius: 6px;
+    border: 0;
+    display: block;
+    background-size: 100% 100%;
+}
+
+.me-work-card-title {
+    margin: 12px 0;
+}
+
+.loading,
+.no-more {
+    text-align: center;
+    margin-bottom: 24px;
 }
 
 @media (prefers-color-scheme: light) {

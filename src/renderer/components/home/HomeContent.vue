@@ -57,6 +57,11 @@ onMounted(async () => {
 </script>
 
 <style scoped>
+.home-content {
+    overflow-y: auto;
+    height: 100vh;
+}
+
 .home-banners {
     margin: auto;
     width: 720px;

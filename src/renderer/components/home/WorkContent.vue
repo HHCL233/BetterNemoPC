@@ -1,7 +1,7 @@
 <template>
     <div class="work-content">
         <div class="main-content">
-            <mdui-card class="work-content">
+            <mdui-card class="work-player-content">
                 <div class="player">
                     <iframe class="player-iframe" :src="workInfo?.player_url"></iframe>
                 </div>
@@ -77,6 +77,11 @@ onMounted(async () => {
     height: 100vh;
     width: 100%;
     display: flex;
+}
+
+.work-player-content {
+    height: 100vh;
+    width: 100%;
 }
 
 .work-info-drawer {

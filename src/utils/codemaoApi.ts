@@ -65,6 +65,12 @@ export class codemaoApi {
             });
         }
     }
+    getUserWork(id: string, offset: string, limit?: string) {
+        return request({
+            url: this.baseURL + `/creation-tools/v2/user/center/work-list?type=newest&user_id=${id}&offset=${offset}&limit=${limit ?? 15}`,
+            method: 'GET',
+        });
+    }
 }
 
 const globalCodemaoApi = new codemaoApi();

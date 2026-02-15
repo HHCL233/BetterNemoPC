@@ -16,6 +16,9 @@ export const initLogin = async () => {
         //window.electronAPI.deleteConfig('identity')
         const confIdentity = await window.electronAPI.getConfig('identity');
         const confPassword = await window.electronAPI.getConfig('password');
+
+        const loginSuccess = document.querySelector(".auto-login-success") as Snackbar;
+        const loginError = document.querySelector(".auto-login-error") as Snackbar;
         if (confIdentity == undefined) {
             loginDialog.open = true;
             const formElement = document.getElementById('loginForm');
@@ -33,10 +36,11 @@ export const initLogin = async () => {
                         identityInput.setCustomValidity('');
                         window.electronAPI.setConfig('identity', String(formData.get('identity')));
                         window.electronAPI.setConfig('password', SecureAES.encrypt(String(formData.get('password'))));
-                        contentStore.userData = ((await window.$CodemaoApi.getUserData()).data ?? {})
+                        loginSuccess.open = true;
                         console.log('登陆成功!')
                     } else {
-                        identityInput.setCustomValidity('登录失败:' + response['data']['error_message'])
+                        identityInput.setCustomValidity('登录失败:' + response['data']['error_message']);
+                        loginError.open = true;
                     }
                 } catch (err) {
                     console.error('请求失败：', err);
@@ -45,16 +49,13 @@ export const initLogin = async () => {
             });
         } else {
             loginDialog.open = false;
-            const autoLoginSuccess = document.querySelector(".auto-login-success") as Snackbar;
-            const autoLoginError = document.querySelector(".auto-login-error") as Snackbar;
             const password = SecureAES.decrypt(confPassword);
             const response: any = await window.$CodemaoApi.login(String(confIdentity), String(password));
 
             if (response['success'] == true && response['status'] == 200) {
-                autoLoginSuccess.open = true;
-                contentStore.userData = ((await window.$CodemaoApi.getUserData()).data ?? {})
+                loginSuccess.open = true;
             } else {
-                autoLoginError.open = true;
+                loginError.open = true;
             };
         }
 

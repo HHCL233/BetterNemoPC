@@ -19,6 +19,7 @@ export const useContentStore = defineStore('content', () => {
     const currentContent = ref<ContentKey>('home')
     const currentContentData = ref('')
     const userData = ref({})
+    const userWork = ref([])
 
     const currentContentComponent = computed(() => {
         return componentMap[currentContent.value]
@@ -40,7 +41,8 @@ export const useContentStore = defineStore('content', () => {
         switchContent,
         currentContentData,
         switchContentData,
-        userData
+        userData,
+        userWork
     }
 })
 
