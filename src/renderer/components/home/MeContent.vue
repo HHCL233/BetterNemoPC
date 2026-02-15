@@ -59,13 +59,11 @@ const fetchData = async () => {
         const newData = (await window.$CodemaoApi.getUserWork(contentStore.userData.user_id, String(page.value * 15))).data
         const newWork = newData.items
         await new Promise(resolve => setTimeout(resolve, 800))
-        if ([...contentStore.userWork, ...newWork].length >= newData.total) {
+        contentStore.userWork = [...contentStore.userWork, ...newWork]
+        page.value++
+        if (contentStore.userWork.length >= (newData.total)) {
             hasMore.value = false
             isLoading.value = false
-        } else {
-            console.log(newData)
-            contentStore.userWork = [...contentStore.userWork, ...newWork]
-            page.value++
         }
     } catch (error) {
         console.error('加载失败：', error)

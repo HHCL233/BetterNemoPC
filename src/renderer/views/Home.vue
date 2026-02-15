@@ -1,15 +1,15 @@
 <template>
     <div style="position: relative;height: 100%;">
-        <mdui-navigation-rail contained divider value="home">
+        <mdui-navigation-rail contained divider value="home" alignment="center">
             <mdui-fab lowered icon="add--outlined" slot="top"></mdui-fab>
-            <mdui-navigation-rail-item icon="home--outlined" value="home"
+            <mdui-navigation-rail-item icon="home--outlined" value="home" active-icon="home--filled"
                 @click="contentStore.switchContent('home')">主页</mdui-navigation-rail-item>
-            <mdui-navigation-rail-item icon="person--outlined" value="me"
+            <mdui-navigation-rail-item icon="person--outlined" value="me" active-icon="person--filled"
                 @click="contentStore.switchContent('me')">我的</mdui-navigation-rail-item>
-            <mdui-navigation-rail-item icon="bug_report--outlined" value="debug"
+            <mdui-navigation-rail-item icon="bug_report--outlined" value="debug" active-icon="bug_report--filled"
                 @click="contentStore.switchContent('debug')">调试</mdui-navigation-rail-item>
-
-            <mdui-button-icon variant="outlined" icon="settings" slot="bottom" value="settings"></mdui-button-icon>
+            <mdui-navigation-rail-item icon="settings--outlined" value="settings" active-icon="settings--filled"
+                @click="contentStore.switchContent('settings')">设置</mdui-navigation-rail-item>
         </mdui-navigation-rail>
         <div class="right-container">
             <KeepAlive>
