@@ -10,6 +10,7 @@
         <mdui-card class="work-info-drawer">
             <h2 class="work-title">{{ workInfo.work_name }}</h2>
             <p class="work-time">{{ '更新时间: ' + timeStamp2Date(workInfo?.publish_time ?? 0) }}</p>
+            <p class="work-type">{{ '作品由 ' + (workInfo?.type ?? '未知') + '(' + workInfo?.ide_type + ') 创作' }}</p>
             <mdui-card clickable class="work-user" variant="filled">
                 <mdui-avatar class="work-user-avatar" :src="workInfo?.user_info?.avatar"></mdui-avatar>
                 <p class="work-user-name">{{ workInfo?.user_info?.nickname ?? 'Inventocode' }}</p>
@@ -43,7 +44,8 @@
                         '点赞' }}</mdui-button>
                 <mdui-button icon="star_border--outlined" class="work-control-button"
                     :variant="workInfo?.abilities?.is_collected ? 'filled' : 'tonal'"
-                    @click="collectionWork(workInfo?.id ?? -1)">{{ workInfo?.abilities?.is_collected ? '已收藏' : '收藏'
+                    @click="collectionWork(workInfo?.id ?? -1)" v-if="workInfo?.type != 'COCO'">{{
+                        workInfo?.abilities?.is_collected ? '已收藏' : '收藏'
                     }}</mdui-button>
                 <!--<mdui-button icon="cloud_download--outlined" class="work-control-button"
                     :variant="workInfo?.abilities?.is_owned ? 'filled' : 'tonal'"
@@ -195,7 +197,8 @@ async function collectionWork(id) {
     width: 100%;
 }
 
-.work-time {
+.work-time,
+.work-type {
     margin: 12px 0;
 }
 
