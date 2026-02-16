@@ -229,3 +229,9 @@ ipcMain.handle('delete-config', (event, key) => {
   store.delete(key);
   return true;
 });
+
+ipcMain.handle('claer-data', (event) => {
+  const cookieSession = session.defaultSession;
+  cookieSession.clearData()
+  return true;
+});

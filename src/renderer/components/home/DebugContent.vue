@@ -14,6 +14,8 @@ const contentStore = useContentStore()
 
 function deleteUserData() {
     window.electronAPI.deleteConfig('identity')
+    window.electronAPI.deleteConfig('password')
+    window.electronAPI.claerData()
 }
 </script>
 

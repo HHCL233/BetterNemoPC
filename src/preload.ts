@@ -29,6 +29,7 @@ interface ExposedApi {
     getConfig: (key: string) => Promise<string>;
     setConfig: (key: string, value: any) => Promise<boolean>;
     deleteConfig: (key: string) => Promise<boolean>;
+    claerData: () => Promise<boolean>;
 }
 
 const api: ExposedApi = {
@@ -72,6 +73,10 @@ const api: ExposedApi = {
     // 删除配置
     deleteConfig: (key) => {
         return ipcRenderer.invoke('delete-config', key);
+    },
+    // 清除数据
+    claerData: () => {
+        return ipcRenderer.invoke('claer-data');
     },
 };
 

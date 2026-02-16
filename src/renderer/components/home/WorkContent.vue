@@ -23,7 +23,7 @@
                             <div style="margin-left: 2.5rem">
                                 <mdui-list-item class="work-description-content">{{ workInfo?.description ??
                                     'BetterNemo我们喜欢你'
-                                    }}</mdui-list-item>
+                                }}</mdui-list-item>
                             </div>
                         </mdui-collapse-item>
                         <mdui-collapse-item>
@@ -31,7 +31,7 @@
                             <div style="margin-left: 2.5rem">
                                 <mdui-list-item class="work-description-content">{{ workInfo?.operation ??
                                     '我们喜欢Inventocode,方圆圆,砂磨'
-                                    }}</mdui-list-item>
+                                }}</mdui-list-item>
                             </div>
                         </mdui-collapse-item>
                     </mdui-collapse>
@@ -85,12 +85,12 @@ async function likeWork(id) {
         if (request['status'] == 200) {
             await updateWorkInfo()
             snackbar({
-                message: (workInfo?.value.abilities?.is_praised ? `已取消点赞作品 ${id}` : `已点赞作品 ${id}`),
+                message: (workInfo?.value.abilities?.is_praised ? `已点赞作品 ${id}` : `已取消点赞作品 ${id}`),
                 closeable: true
             });
         } else {
             snackbar({
-                message: (workInfo?.value.abilities?.is_praised ? `取消点赞作品 ${id} 失败` : `点赞作品 ${id} 失败`),
+                message: (workInfo?.value.abilities?.is_praised ? `点赞作品 ${id} 失败` : `取消点赞作品 ${id} 失败`),
                 closeable: true
             });
             console.error(`点赞作品 ${id} 失败:`, request)
@@ -98,7 +98,7 @@ async function likeWork(id) {
         }
     } catch (err) {
         snackbar({
-            message: (workInfo?.value.abilities?.is_praised ? `取消点赞作品 ${id} 失败:${err}` : `点赞作品 ${id} 失败:${err}`),
+            message: (workInfo?.value.abilities?.is_praised ? `点赞作品 ${id} 失败:${err}` : `取消点赞作品 ${id} 失败:${err}`),
             closeable: true
         });
         console.error(`点赞作品 ${id} 请求失败:`, err)
@@ -111,12 +111,12 @@ async function collectionWork(id) {
         if (request['status'] == 200) {
             await updateWorkInfo()
             snackbar({
-                message: (workInfo?.value.abilities?.is_praised ? `已取消收藏作品 ${id}` : `已收藏作品 ${id}`),
+                message: (workInfo?.value.abilities?.is_praised ? `已收藏作品 ${id}` : `已取消收藏作品 ${id}`),
                 closeable: true
             });
         } else {
             snackbar({
-                message: (workInfo?.value.abilities?.is_praised ? `取消收藏作品 ${id} 失败` : `收藏作品 ${id} 失败`),
+                message: (workInfo?.value.abilities?.is_praised ? `收藏作品 ${id} 失败` : `取消收藏作品 ${id} 失败`),
                 closeable: true
             });
             console.error(`收藏作品 ${id} 失败:`, request)
@@ -124,7 +124,7 @@ async function collectionWork(id) {
         }
     } catch (err) {
         snackbar({
-            message: (workInfo?.value.abilities?.is_praised ? `取消收藏作品 ${id} 失败:${err}` : `收藏作品 ${id} 失败:${err}`),
+            message: (workInfo?.value.abilities?.is_praised ? `收藏作品 ${id} 失败:${err}` : `取消收藏作品 ${id} 失败:${err}`),
             closeable: true
         });
         console.error(`收藏作品 ${id} 请求失败:`, err)

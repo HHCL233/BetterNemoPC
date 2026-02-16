@@ -21,8 +21,12 @@ export const initLogin = async () => {
         const loginError = document.querySelector(".auto-login-error") as Snackbar;
         if (confIdentity == undefined) {
             loginDialog.open = true;
+            const noLoginBtn = document.querySelector(".no-login-btn");
             const formElement = document.getElementById('loginForm');
             const loginForm = formElement as HTMLFormElement;
+
+            noLoginBtn!.addEventListener("click", () => loginDialog.open = false);
+
             loginForm!.addEventListener('submit', async (e) => {
                 e.preventDefault();
 

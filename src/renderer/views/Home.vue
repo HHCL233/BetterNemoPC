@@ -25,7 +25,8 @@
             <mdui-text-field label="密码" class="login-password" name="password" type="password"
                 toggle-password></mdui-text-field>
         </form>
-        <mdui-button slot="action" variant="tonal" type="submit" form="loginForm" class="login-btn">登录</mdui-button>
+        <mdui-button slot="action" variant="text" class="no-login-btn">暂不登录</mdui-button>
+        <mdui-button slot="action" variant="filled" type="submit" form="loginForm" class="login-btn">登录</mdui-button>
     </mdui-dialog>
     <mdui-snackbar closeable class="auto-login-success">登录成功!</mdui-snackbar>
     <mdui-snackbar closeable class="auto-login-error">登录失败</mdui-snackbar>
