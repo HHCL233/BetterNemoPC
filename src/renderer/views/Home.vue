@@ -29,6 +29,8 @@
     </mdui-dialog>
     <mdui-snackbar closeable class="auto-login-success">登录成功!</mdui-snackbar>
     <mdui-snackbar closeable class="auto-login-error">登录失败</mdui-snackbar>
+    <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86
+        src="//music.163.com/outchain/player?type=2&id=514761070&auto=1&height=66" class="music-player"></iframe>
 </template>
 
 <script setup lang="ts">
@@ -65,5 +67,9 @@ onMounted(() => {
 .margin {
     height: 50px;
     width: 100%;
+}
+
+.music-player {
+    display: none;
 }
 </style>

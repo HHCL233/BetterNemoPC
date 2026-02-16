@@ -71,6 +71,24 @@ export class codemaoApi {
             method: 'GET',
         });
     }
+    likeWork(id: string, isCancel: boolean) {
+        return request({
+            url: this.baseURL + `/nemo/v2/works/${id}/like`,
+            method: (isCancel ? 'DELETE' : 'POST'),
+        });
+    }
+    collectionWork(id: string, isCancel: boolean) {
+        return request({
+            url: this.baseURL + `/nemo/v2/works/${id}/collection`,
+            method: (isCancel ? 'DELETE' : 'POST'),
+        });
+    }
+    forkWork(id: string, isCancel: boolean) {
+        return request({
+            url: this.baseURL + `/nemo/v2/works/${id}/fork`,
+            method: (isCancel ? 'DELETE' : 'POST'),
+        });
+    }
 }
 
 const globalCodemaoApi = new codemaoApi();

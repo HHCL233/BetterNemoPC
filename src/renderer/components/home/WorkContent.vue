@@ -22,7 +22,7 @@
                             <div style="margin-left: 2.5rem">
                                 <mdui-list-item class="work-description-content">{{ workInfo?.description ??
                                     'BetterNemo我们喜欢你'
-                                }}</mdui-list-item>
+                                    }}</mdui-list-item>
                             </div>
                         </mdui-collapse-item>
                         <mdui-collapse-item>
@@ -30,16 +30,25 @@
                             <div style="margin-left: 2.5rem">
                                 <mdui-list-item class="work-description-content">{{ workInfo?.operation ??
                                     '我们喜欢Inventocode,方圆圆,砂磨'
-                                }}</mdui-list-item>
+                                    }}</mdui-list-item>
                             </div>
                         </mdui-collapse-item>
                     </mdui-collapse>
                 </mdui-list>
             </mdui-card>
             <div class="work-control">
-                <mdui-button icon="thumb_up--outlined" class="work-control-button" variant="tonal">点赞</mdui-button>
-                <mdui-button icon="star_border--outlined" class="work-control-button" variant="tonal">收藏</mdui-button>
-                <mdui-button icon="content_copy--outlined" class="work-control-button" variant="tonal">学习</mdui-button>
+                <mdui-button icon="thumb_up--outlined" class="work-control-button"
+                    :variant="workInfo?.abilities?.is_praised ? 'filled' : 'tonal'"
+                    @click="likeWork(workInfo?.id ?? -1)">{{ workInfo?.abilities?.is_praised ? '已点赞' :
+                        '点赞' }}</mdui-button>
+                <mdui-button icon="star_border--outlined" class="work-control-button"
+                    :variant="workInfo?.abilities?.is_collected ? 'filled' : 'tonal'"
+                    @click="collectionWork(workInfo?.id ?? -1)">{{ workInfo?.abilities?.is_collected ? '已收藏' : '收藏'
+                    }}</mdui-button>
+                <!--<mdui-button icon="cloud_download--outlined" class="work-control-button"
+                    :variant="workInfo?.abilities?.is_owned ? 'filled' : 'tonal'"
+                    @click="forkWork(workInfo?.id ?? -1)">{{ workInfo?.abilities?.is_owned ? '已学习' : '学习'
+                    }}</mdui-button>-->
             </div>
             <mdui-card class="work-comment" variant="filled">
                 <p>评论</p>
@@ -52,16 +61,80 @@
 import { onMounted, ref } from 'vue';
 import { useContentStore } from '../../../stores/store'
 import { timeStamp2Date } from '../../../utils/time';
+import { snackbar } from 'mdui/functions/snackbar.js';
 
 const contentStore = useContentStore()
 let workInfo = ref({})
 
 onMounted(async () => {
+    await updateWorkInfo()
+})
+
+async function updateWorkInfo() {
     workInfo.value = (await window.$CodemaoApi.getWorkInfo(contentStore.currentContentData)).data;
     console.log(workInfo.work_name)
     const workInfoDrawer = document.querySelector(".work-info-drawer");
     workInfoDrawer.open = true;
-})
+}
+
+async function likeWork(id) {
+    try {
+        const request = await window.$CodemaoApi.likeWork(id, (workInfo?.value.abilities?.is_praised))
+        if (request['status'] == 200) {
+            await updateWorkInfo()
+            snackbar({
+                message: (workInfo?.value.abilities?.is_praised ? `已取消点赞作品 ${id}` : `已点赞作品 ${id}`),
+                closeable: true
+            });
+        } else {
+            snackbar({
+                message: (workInfo?.value.abilities?.is_praised ? `取消点赞作品 ${id} 失败` : `点赞作品 ${id} 失败`),
+                closeable: true
+            });
+            console.error(`点赞作品 ${id} 失败:`, request)
+            console.error(request)
+        }
+    } catch (err) {
+        snackbar({
+            message: (workInfo?.value.abilities?.is_praised ? `取消点赞作品 ${id} 失败:${err}` : `点赞作品 ${id} 失败:${err}`),
+            closeable: true
+        });
+        console.error(`点赞作品 ${id} 请求失败:`, err)
+    }
+}
+
+async function collectionWork(id) {
+    try {
+        const request = await window.$CodemaoApi.collectionWork(id, (workInfo?.value.abilities?.is_collected))
+        if (request['status'] == 200) {
+            await updateWorkInfo()
+            snackbar({
+                message: (workInfo?.value.abilities?.is_praised ? `已取消收藏作品 ${id}` : `已收藏作品 ${id}`),
+                closeable: true
+            });
+        } else {
+            snackbar({
+                message: (workInfo?.value.abilities?.is_praised ? `取消收藏作品 ${id} 失败` : `收藏作品 ${id} 失败`),
+                closeable: true
+            });
+            console.error(`收藏作品 ${id} 失败:`, request)
+            console.error(request)
+        }
+    } catch (err) {
+        snackbar({
+            message: (workInfo?.value.abilities?.is_praised ? `取消收藏作品 ${id} 失败:${err}` : `收藏作品 ${id} 失败:${err}`),
+            closeable: true
+        });
+        console.error(`收藏作品 ${id} 请求失败:`, err)
+    }
+}
+
+/*function forkWork(id) {
+    snackbar({
+        message: `作品 ${id} 不是再创作作品`,
+        closeable: true
+    });
+}*/
 </script>
 
 <style>
@@ -136,7 +209,7 @@ onMounted(async () => {
 
 .work-control {
     display: flex;
-    gap: 8px
+    gap: 4px
 }
 
 .work-control-button {

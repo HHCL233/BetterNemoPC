@@ -168,10 +168,17 @@ ipcMain.handle('universal-request', async (_, options: RequestOptions) => {
     }
 
     let responseData: any;
+    const responseClone = response.clone();
+
     try {
       responseData = await response.json();
-    } catch {
-      responseData = await response.text();
+    } catch (jsonError) {
+      try {
+        responseData = await responseClone.text();
+      } catch (textError) {
+        responseData = '';
+        console.warn('响应体解析失败，返回空字符串:', textError);
+      }
     }
     console.log('请求完成')
     return {

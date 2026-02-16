@@ -35,6 +35,7 @@
         </div>
         <div class="loading" v-if="isLoading"><mdui-circular-progress></mdui-circular-progress></div>
         <div class="no-more" v-if="hasMore === false && contentStore.userWork.length > 0">你来到了宇宙的尽头~</div>
+        <div class="no-more" v-if="loadingError === true">无法连接小宇宙,请检查网络连接~</div>
     </div>
 </template>
 
@@ -48,6 +49,7 @@ const meContent = ref(null)
 const isLoading = ref(false)
 const hasMore = ref(true)
 const page = ref(0)
+const loadingError = ref(false)
 
 const contentStore = useContentStore()
 
@@ -66,7 +68,9 @@ const fetchData = async () => {
             isLoading.value = false
         }
     } catch (error) {
-        console.error('加载失败：', error)
+        hasMore.value = false
+        isLoading.value = false
+        loadingError.value = true
     } finally {
         isLoading.value = false
     }
