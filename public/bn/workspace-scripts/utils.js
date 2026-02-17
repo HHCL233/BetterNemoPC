@@ -475,7 +475,7 @@ function reloadExtension() {
             return args;
         };
         api.loadScript = async function (url) {
-            await loadScript('extensions/' + extensionMetaData.fileName + '/' + url);
+            await loadScript('extensions/' + extensionMetaData.fileName+ '/' + url);
         };
         return api;
     }
@@ -700,55 +700,35 @@ async function showExtensionShop(disabled = [], callback) {
     const dsbridge = await waitHook('Dsbridge');
     const call = dsbridge.call;
     dsbridge.call = (...args) => {
-        try {
-            const rawArg = args[1];
-            const parsedArg = typeof rawArg === 'string' ? JSON.parse(rawArg) : rawArg;
-            const bridgeData = (parsedArg && typeof parsedArg.data === 'string') ? JSON.parse(parsedArg.data) : parsedArg;
-            const payload = bridgeData?.payload;
-
-            // 兼容 dsbridge callback stub（_dscbstub）与直接 callback 两种形式
-            const callback = (typeof args[2] === 'function')
-                ? args[2]
-                : (parsedArg && parsedArg._dscbstub && typeof window[parsedArg._dscbstub] === 'function'
-                    ? window[parsedArg._dscbstub]
-                    : null);
-
-            if (bridgeData?.type === 'EDIT_TEXT') {
-                console.log('[原生劫持 - 文本编辑]', payload);
-                const browserVersion = getBrowserVersion();
-                const canUseFullscreenInput = Number.isNaN(browserVersion) || browserVersion > 86;
-                if (canUseFullscreenInput && callback) {
-                    (async () => {
-                        const text = await showFullscreenTextInput(payload?.text ?? '');
-                        if (text !== null) callback(text);
-                    })();
-                    return;
-                }
-                if (callback) {
-                    const value = prompt('请输入文本', payload?.text ?? '');
-                    if (value !== null) callback(value);
-                    return;
-                }
-            }
-
-            if (bridgeData?.type === 'SELECT_EXTENSIONS_CATEGORIES') {
-                console.log('[原生劫持 - 扩展选择]', payload);
-                if (callback) {
-                    const browserVersion = getBrowserVersion();
-                    if (!Number.isNaN(browserVersion) && browserVersion < 86) {
-                        alert("这个还没兼容，所以我只能帮你加一个microbit了");
-                        callback('["microbit"]');
-                    } else {
+        if (args.length === 3)
+            try {
+                const data = JSON.parse(args[1]);
+                const payload = data.payload;
+                if (data.type === 'EDIT_TEXT') {
+                    console.log('[原生劫持 - 文本编辑]', payload);
+                    if (getBrowserVersion() > 86) {
                         (async () => {
-                            const selected_categories = payload?.selected_categories || [];
-                            await showExtensionShop(selected_categories, callback);
+                            const text = await showFullscreenTextInput(payload.text);
+                            if (text !== null) args[2](text);
                         })();
+                        return;
                     }
+                    // else args[2](prompt('请输入文本'));
+                    else return call.apply(dsbridge, args);
+                }
+                if (data.type === 'SELECT_EXTENSIONS_CATEGORIES') {
+                    console.log('[原生劫持 - 扩展选择]', payload);
+                    if (getBrowserVersion() < 86) {
+                        alert("这个还没兼容，所以我只能帮你加一个microbit了");
+                        args[2]('["microbit"]');
+                    } else
+                        (async () => {
+                            const selected_categories = payload.selected_categories;
+                            await showExtensionShop(selected_categories, args[2]);
+                        })();
                     return;
                 }
-            }
-        } catch (e) { console.error(e); }
-
+            } catch (e) { console.error(e); }
         const result = call.apply(dsbridge, args);
         if (isPhoneTestEnv()) console.log('[Webview -> Nemo] args:', ...args, 'result:', result);
         return result;

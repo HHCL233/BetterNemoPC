@@ -11,6 +11,14 @@
     "outDir": "dist",
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
-    "ignoreDeprecations": "6.0",
-  }
+    "ignoreDeprecations": "6.0"
+  },
+  "exclude": [
+    "./dist",
+    "**/*.test.ts",
+    "**/*.test.tsx",
+    "./scripts/**/*",
+    "./src/ignore-this-file.ts",
+    "./public/bn/workspace.bundle.79d6432e01ccdecb492a.js"
+  ]
 }

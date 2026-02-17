@@ -43,16 +43,19 @@
   "dependencies": {
     "@electron/remote": "^2.1.3",
     "@mdui/icons": "^1.0.3",
+    "@vant/touch-emulator": "^1.5.0",
     "@vueuse/core": "^14.2.1",
     "crypto-js": "^4.2.0",
     "electron-squirrel-startup": "^1.0.1",
     "electron-store": "^11.0.2",
+    "hammer-touchemulator": "^0.0.2",
     "mdui": "^2.1.4",
     "node-fetch": "^3.3.2",
     "pinia": "^3.0.4",
     "set-cookie-parser": "^3.0.1",
     "sober": "^1.1.9",
     "sober-theme": "^0.1.2-alpha.1",
+    "touch-emulator": "^1.0.0",
     "vue": "^3.5.28",
     "vue-router": "^4.6.4"
   }

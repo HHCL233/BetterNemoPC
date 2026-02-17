@@ -2,6 +2,7 @@
 <html>
 
 <head>
+  <script src="touch-emulator.js"></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -13,12 +14,12 @@
   <script defer src="saveSvgAsPng.min.js"></script>
   <link rel="stylesheet" href="fa.min.css">
   <script>const BetterNemoVersion = "260215.3";</script>
-  <script src="bs.js"></script>
   <script src="extension-loader.js"></script>
   <link rel="stylesheet" href="mdui.css" />
   <link rel="stylesheet" href="material-icons.css" />
   <script src="mdui.global.js"></script>
   <script src="ua-parser.min.js"></script>
+  <script src="bs.js"></script>
 </head>
 
 <body class="mdui-theme-dark">
@@ -72,7 +73,7 @@
         <i class="fas fa-times"></i>
       </button>
     </div>
-    <div class="window-content"></div>
+    <div class="window-content" data-no-touch-simulate></div>
   </div>
   <div id="workspace"></div>
   <div id="react_root"></div>

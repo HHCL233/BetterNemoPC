@@ -67,10 +67,15 @@ const presetBackgroundColor = "#221D4E";
         load: (page = UI.home, ...args) => {
             UI.clear();
             if (UI.pageHistory && page != UI.home) {
-                windowContent.innerHTML = '<li class="bn-menu-item menu-title"><i class="fas fa-circle-chevron-left"></i><span></span></li>';
+                windowContent.innerHTML = '<li class="bn-menu-item menu-title" data-no-touch-simulate><i class="fas fa-circle-chevron-left"></i><span></span></li>';
                 setTimeout(() => {
                     const backButton = document.querySelector('#floatWindow > div.window-content > li.menu-title');
                     backButton.ontouchend = (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        UI.back(page);
+                    };
+                    backButton.onclick = (e) => {
                         e.preventDefault();
                         e.stopPropagation();
                         UI.back(page);
