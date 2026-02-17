@@ -7,7 +7,9 @@ import 'mdui';
 import './utils/codemaoApi';
 import 'sober/carousel'
 import { setColorScheme } from 'mdui/functions/setColorScheme.js';
+import { createScheme } from 'sober-theme'
 
-const pinia = createPinia()
-setColorScheme('#ce83fd');
+createScheme('#471E7F');
+setColorScheme('#471E7F');
+const pinia = createPinia();
 createApp(App).use(router).use(pinia).mount('#app');

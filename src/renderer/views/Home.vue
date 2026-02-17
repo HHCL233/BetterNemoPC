@@ -1,7 +1,7 @@
 <template>
     <div style="position: relative;height: 100%;">
         <mdui-navigation-rail contained divider value="home" alignment="center">
-            <mdui-fab lowered icon="add--outlined" slot="top"></mdui-fab>
+            <mdui-fab lowered icon="add--outlined" slot="top" href="./bn"></mdui-fab>
             <mdui-navigation-rail-item icon="home--outlined" value="home" active-icon="home--filled"
                 @click="contentStore.switchContent('home')">主页</mdui-navigation-rail-item>
             <mdui-navigation-rail-item icon="person--outlined" value="me" active-icon="person--filled"

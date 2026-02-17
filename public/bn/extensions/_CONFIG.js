@@ -1,0 +1,16 @@
+const EXTENSION_FILES = [
+    "[扩展模板]template",
+    "[MQTT]mqtt",
+    "[加密]encrypt",
+    "[在线音乐]music",
+    "[简单文件系统]SFS",
+    "[数组运算]array_operators",
+    "[天气]weather",
+    "[AI对话]ottama",
+    "[IP工具]ip_tool",
+    "[便捷FPS]fps",
+    "[图像处理]image_tool",
+    "[代你学物理]robin",
+    "[正则表达式]regex",
+    "[条码大师]QRCodes",
+]

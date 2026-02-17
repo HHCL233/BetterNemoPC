@@ -52,6 +52,7 @@
     "pinia": "^3.0.4",
     "set-cookie-parser": "^3.0.1",
     "sober": "^1.1.9",
+    "sober-theme": "^0.1.2-alpha.1",
     "vue": "^3.5.28",
     "vue-router": "^4.6.4"
   }

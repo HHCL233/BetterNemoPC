@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta content="email=no" name="format-detection" />
+  <meta name="format-detection" content="telephone=no" />
+  <title>Codemao Blockly</title>
+  <script src="version/assets/webview/eruda.js"></script>
+  <script>eruda.init();</script>
+  <script defer src="version/assets/webview/mqtt.min.js"></script>
+  <script defer src="version/assets/webview/crypto-js.min.js"></script>
+  <script defer src="version/assets/webview/numjs.min.js"></script>
+  <script defer src="version/assets/webview/saveSvgAsPng.min.js"></script>
+  <link rel="stylesheet" href="version/assets/webview/fa.min.css">
+  <script>const BetterNemoVersion = "999999.99";</script>
+  <script src="extension-loader.js"></script>
+  <script>
+    if (navigator.userAgent.includes('__TEST_ENV__'))
+      setInterval(() => {
+        if (document.querySelector("#theatre_container")) {
+          document.querySelector("#theatre_container").style.display = "none";
+        }
+      }, 100);
+  </script>
+  <link rel="stylesheet" href="version/assets/webview/mdui.css" />
+  <script src="version/assets/webview/mdui.global.js"></script>
+</head>
+
+<body class="mdui-theme-dark">
+  <!-- 全屏多行文本输入对话框 -->
+  <mdui-dialog id="fullscreenTextDialog" fullscreen close-on-esc close-on-overlay-click="false" style="display: none;z-index: 999999999999;">
+    <div style="display: flex; flex-direction: column; height: 100%;">
+      <div style="padding: 1.5rem; overflow: auto;height: 90vh;">
+        <mdui-text-field id="dialogTextField" rows="8" label="请输入内容"
+          style="width: 100%;height: 100%;"></mdui-text-field>
+      </div>
+      <div
+        style="display: flex; justify-content: flex-end; gap: 0.5rem; padding: 1.5rem; border-top: 1px solid var(--mdui-color-outline-variant);">
+        <mdui-button id="dialogCancelBtn" variant="text">取消</mdui-button>
+        <mdui-button id="dialogConfirmBtn" variant="raised">确认</mdui-button>
+      </div>
+    </div>
+  </mdui-dialog>
+  <!-- 悬浮球 -->
+  <div class="float-ball" id="floatBall">
+    <i class="fa-solid fa-gear"></i>
+  </div>
+
+  <!-- 悬浮窗口 -->
+  <div class="float-window" id="floatWindow">
+    <div class="window-header">
+      <h3><i class="fa-solid fa-cube"></i> BetterNemo</h3>
+      <button class="close-btn" id="closeBtn">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    <div class="window-content"></div>
+  </div>
+  <div id="workspace"></div>
+  <div id="react_root"></div>
+  <div class='panel_mask'></div>
+  <div id='test'></div>
+  <div id='highlight_test'></div>
+</body>
+
+</html>

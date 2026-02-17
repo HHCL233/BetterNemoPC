@@ -1,11 +1,14 @@
-import { app, BrowserWindow, Menu, session, ipcMain, dialog } from 'electron';
+import { app, BrowserWindow, Menu, session, ipcMain, dialog,protocol } from 'electron';
 import path from 'node:path';
 import started from 'electron-squirrel-startup';
 import fetch, { RequestInit as NodeFetchRequestInit } from 'node-fetch';
 import { parse } from 'set-cookie-parser';
 import * as os from "os";
 import * as fs from "fs/promises";
-import Store from 'electron-store'
+import Store from 'electron-store';
+import { fileURLToPath } from 'url';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 interface CookiesSetDetails {
   url: string;
@@ -50,6 +53,52 @@ interface RequestOptions {
   withCredentials?: boolean;
 }
 
+async function registerCustomProtocol() {
+  try {
+    protocol.handle('app', async (request) => {
+      try {
+        const pathName = decodeURIComponent(request.url.replace('app:///', ''))
+        const basePath = app.isPackaged 
+          ? path.join(process.resourcesPath, 'app.asar.unpacked', 'dist')
+          : path.join(__dirname, '../../dist')
+        const fullPath = path.resolve(basePath, pathName)
+        
+        const content = await fs.readFile(fullPath)
+        const mimeType = getMimeType(fullPath)
+        
+        return new Response(content, {
+          headers: { 'Content-Type': mimeType }
+        })
+      } catch (fileError) {
+        console.error('读取文件失败:', fileError)
+        return new Response('File not found', {
+          status: 404,
+          headers: { 'Content-Type': 'text/plain' }
+        })
+      }
+    })
+    console.log('app 协议注册成功')
+  } catch (error) {
+    console.error('app 协议注册失败:', error)
+  }
+}
+
+function getMimeType(filePath:string) {
+  const ext = path.extname(filePath).toLowerCase()
+  const mimeMap = {
+    '.html': 'text/html; charset=utf-8',
+    '.js': 'application/javascript',
+    '.css': 'text/css',
+    '.png': 'image/png',
+    '.jpg': 'image/jpeg',
+    '.gif': 'image/gif',
+    '.json': 'application/json'
+  } /** @type {Record<string, string>} */;
+  
+  return mimeMap[ext as keyof typeof mimeMap] || 'application/octet-stream'
+}
+
+
 const createWindow = () => {
   Menu.setApplicationMenu(null)
   const mainWindow = new BrowserWindow({
@@ -86,6 +135,7 @@ app.on('window-all-closed', () => {
   }
 });
 app.on('activate', () => {
+  registerCustomProtocol()
   if (BrowserWindow.getAllWindows().length === 0) {
     createWindow();
   }
@@ -235,3 +285,12 @@ ipcMain.handle('claer-data', (event) => {
   cookieSession.clearData()
   return true;
 });
+
+ipcMain.handle('app-quit', (event) => {
+  app.quit()
+});
+
+ipcMain.handle('get-iframe-src', (event, fileName) => {
+    // 返回自定义协议的路径
+    return `app:///${fileName}`
+  })

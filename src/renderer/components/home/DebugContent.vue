@@ -4,6 +4,7 @@
         <mdui-text-field label="作品ID"
             @change="contentStore.switchContentData('work', $event.srcElement.inputRef.value.value)"></mdui-text-field>
         <mdui-button @click="deleteUserData()">清除数据(下次打开后生效)</mdui-button>
+        <mdui-button @click="exit()">退出BNPC</mdui-button>
     </div>
 </template>
 
@@ -16,6 +17,10 @@ function deleteUserData() {
     window.electronAPI.deleteConfig('identity')
     window.electronAPI.deleteConfig('password')
     window.electronAPI.claerData()
+}
+
+function exit() {
+    window.electronAPI.appQuit()
 }
 </script>
 

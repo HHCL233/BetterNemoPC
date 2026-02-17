@@ -15,12 +15,19 @@ console.log('👋 This message is being logged by "App.vue", included via Vite')
 </script>
 
 <style>
+#app {
+    height: 100%;
+}
+
 body {
     margin: 0;
     overflow: hidden;
+    height: 100%;
 }
 
-.webpage {}
+.webpage {
+    height: 100%;
+}
 
 .page-transition-enter-from {
     opacity: 0;

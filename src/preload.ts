@@ -30,6 +30,7 @@ interface ExposedApi {
     setConfig: (key: string, value: any) => Promise<boolean>;
     deleteConfig: (key: string) => Promise<boolean>;
     claerData: () => Promise<boolean>;
+    getIframeSrc: (fileName: string) => Promise<string>;
 }
 
 const api: ExposedApi = {
@@ -48,7 +49,7 @@ const api: ExposedApi = {
     },
     // 应用退出
     appQuit: () => {
-        ipcRenderer.send('app-quit');
+        ipcRenderer.invoke('app-quit')
     },
     // 打开文件对话框
     showOpenDialog: (options) => ipcRenderer.invoke('show-open-dialog', options),
@@ -78,6 +79,8 @@ const api: ExposedApi = {
     claerData: () => {
         return ipcRenderer.invoke('claer-data');
     },
+    // 获取本地HTML文件的自定义协议路径
+    getIframeSrc: (fileName) => ipcRenderer.invoke('get-iframe-src', fileName)
 };
 
 contextBridge.exposeInMainWorld('electronAPI', api);
